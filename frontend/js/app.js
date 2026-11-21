@@ -1,4 +1,4 @@
-const API = window.API_URL || 'http://127.0.0.1:4000';
+const API = window.API_URL || 'https://espetinho-miranda-api.onrender.com';
 const $ = s => document.querySelector(s);
 
 let allProducts = [];
