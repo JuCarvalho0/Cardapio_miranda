@@ -42,7 +42,7 @@
   .inline-form input { padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: var(--bg-card); color: #fff; flex: 1; min-width: 150px; }
   .admin-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
   .admin-card { background: var(--bg-card); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 8px; }
-  .admin-card strong { color: var(--gold); font-size: 1.1rem; }
+  .admin-card strong { color: var(--gold); font-size: 1.1rem; display: flex; align-items: center; gap: 6px; }
   .admin-card small { color: var(--text-muted); font-size: 0.85rem; }
   .card-actions { display: flex; gap: 8px; margin-top: 10px; }
   .card-actions button { flex: 1; padding: 8px; border-radius: 6px; background: rgba(255,255,255,0.05); color: var(--text); font-size: 0.8rem; }
@@ -171,7 +171,13 @@ const $ = s => document.querySelector(s);
 const $$ = s => document.querySelectorAll(s);
 let token = localStorage.getItem('adminToken');
 let categories = [];
-let currentAdditions = []; // Guarda os adicionais do produto atual
+let currentAdditions = [];
+
+// ÍCONES SVG
+const iconActive = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#25d366" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+const iconInactive = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ff6b6b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>`;
+const iconFire = `<svg width="14" height="14" viewBox="0 0 24 24" fill="#d3b574"><path d="M12 2c0 0-4 4-4 9 0 2 1 4 3 5v2c0 1.1.9 2 2 2s2-.9 2-2v-2c2-1 3-3 3-5 0-5-4-9-4-9zm-1 13.5c-1-.8-1.5-2-1.5-3.5 0-1.5.5-2.5 1.5-3.5v7z"/></svg>`;
+const iconDestaque = `<svg width="14" height="14" viewBox="0 0 24 24" fill="#d3b574"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`;
 
 function authFetch(url, opts = {}) {
   opts.headers = { ...(opts.headers || {}), Authorization: `Bearer ${token}` };
@@ -267,21 +273,43 @@ window.deleteCategory = async (id) => {
 };
 
 async function loadProducts() {
-  const prods = await authFetch(`${API}/api/products/all`).then(r => r.json());
-  $('#productList').innerHTML = prods.map(p => `
-    <div class="admin-card">
-      <strong>${p.name} ${p.featured ? '' : ''}</strong>
-      <small>${p.category?.name || 'Sem categoria'} • R$ ${p.price.toFixed(2).replace('.', ',')}</small>
-      <small>${p.active ? ' Ativo' : ' Inativo'} ${p.unavailable ? '•  Esgotado' : ''}</small>
-      <div class="card-actions">
-        <button onclick="editProduct('${p._id}')">Editar</button>
-        <button onclick="deleteProduct('${p._id}')" class="danger">Excluir</button>
+  try {
+    const res = await authFetch(`${API}/api/products/all`);
+    const prods = await res.json();
+    
+    if (!Array.isArray(prods)) {
+      $('#productList').innerHTML = `<p style="color:red; padding:20px;">Erro ao carregar produtos.</p>`;
+      return;
+    }
+
+    $('#productList').innerHTML = prods.map(p => `
+      <div class="admin-card">
+        <strong>
+          ${p.name} 
+          ${p.featured ? iconDestaque : ''}
+        </strong>
+        <small>${p.category?.name || 'Sem categoria'} • R$ ${p.price ? p.price.toFixed(2).replace('.', ',') : '0,00'}</small>
+        
+        <div style="display:flex; align-items:center; gap:12px; margin-top:6px; font-size:0.85rem; color:var(--text-muted);">
+          <span style="display:flex; align-items:center; gap:4px;">
+            ${p.active ? iconActive : iconInactive} 
+            ${p.active ? 'Ativo' : 'Inativo'}
+          </span>
+          ${p.unavailable ? `<span style="display:flex; align-items:center; gap:4px; color:var(--gold);">${iconFire} Esgotado</span>` : ''}
+        </div>
+
+        <div class="card-actions">
+          <button onclick="editProduct('${p._id}')">Editar</button>
+          <button onclick="deleteProduct('${p._id}')" class="danger">Excluir</button>
+        </div>
       </div>
-    </div>
-  `).join('');
+    `).join('');
+  } catch (err) {
+    console.error("Erro ao buscar produtos:", err);
+    $('#productList').innerHTML = `<p style="color:red; padding:20px;">Erro de conexão: ${err.message}</p>`;
+  }
 }
 
-// RENDERIZAR LISTA DE ADICIONAIS
 function renderAdditions() {
   $('#additionsList').innerHTML = currentAdditions.map((a, index) => `
     <div class="addition-item">
