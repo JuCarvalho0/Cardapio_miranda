@@ -31,4 +31,6 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500).json({ error: err.message || 'Erro interno no servidor' });
 });
 
-app.listen(process.env.PORT || 4000, () => console.log('🚀 Servidor na porta 4000'));
+// CORREÇÃO AQUI: Usa a variável PORT para funcionar na nuvem
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => console.log(`🚀 Servidor na porta ${PORT}`));
