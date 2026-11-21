@@ -7,29 +7,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0d0c0b; 
-    --bg-card: #131211; 
-    --gold: #d3b574; 
-    --gold-light: #e8d3a7; 
-    --text: #f7f5f0; 
-    --text-muted: #a09b92;
+    --bg: #0d0c0b; --bg-card: #131211; --gold: #d3b574; --gold-light: #e8d3a7; --text: #f7f5f0; --text-muted: #a09b92;
   }
-  
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  
-  body { 
-    font-family: 'Oswald', sans-serif; 
-    background: var(--bg); 
-    color: var(--text); 
-    line-height: 1.6; 
-    letter-spacing: 0.5px;
-  }
-  
-  h1, h2, h3 { font-family: 'Oswald', sans-serif; font-weight: 600; }
-  button { font-family: 'Oswald', sans-serif; cursor: pointer; border: none; transition: .3s; }
-  input, textarea, select { font-family: 'Oswald', sans-serif; }
+  body { font-family: 'Oswald', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; letter-spacing: 0.5px; }
+  button { font-family: inherit; cursor: pointer; border: none; transition: .3s; }
+  input, textarea, select { font-family: inherit; }
 
-  /* TELA DE LOGIN */
   .login-screen { position: fixed; inset: 0; background: var(--bg); display: grid; place-items: center; z-index: 999; }
   .login-box { background: var(--bg-card); padding: 40px; border-radius: 16px; border: 1px solid rgba(211,181,116,0.2); width: 100%; max-width: 400px; display: flex; flex-direction: column; gap: 16px; }
   .login-box h2 { text-align: center; color: var(--gold); font-size: 2rem; margin-bottom: 10px; }
@@ -38,7 +22,6 @@
   .login-box button[type="submit"] { background: var(--gold); color: #000; padding: 14px; border-radius: 8px; font-weight: 700; font-size: 1rem; }
   .error { color: #ff6b6b; font-size: 0.85rem; text-align: center; }
 
-  /* PAINEL */
   .admin-panel { display: none; max-width: 1200px; margin: 0 auto; padding: 30px 20px; }
   .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 20px; }
   .admin-header h1 { font-size: 2rem; color: var(--gold); }
@@ -53,7 +36,6 @@
   .tab-content.active { display: block; animation: fadeIn 0.3s; }
   @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-  /* FORMULÁRIOS E LISTAS */
   .btn-primary { background: var(--gold); color: #000; padding: 12px 24px; border-radius: 8px; font-weight: 600; margin-bottom: 20px; }
   .btn-primary:hover { background: var(--gold-light); }
   .inline-form { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
@@ -73,7 +55,6 @@
   .settings-form input, .settings-form textarea { padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.4); color: #fff; }
   .settings-form input:focus, .settings-form textarea:focus { border-color: var(--gold); outline: none; }
 
-  /* MODAL */
   .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 20px; }
   .modal.show { display: flex; }
   .modal-box { background: var(--bg-card); border: 1px solid var(--gold); border-radius: 16px; padding: 30px; max-width: 500px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative; }
@@ -87,16 +68,12 @@
   .modal-actions button[type="button"] { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 10px 20px; border-radius: 8px; }
   .modal-actions button[type="submit"] { background: var(--gold); color: #000; padding: 10px 24px; border-radius: 8px; font-weight: 600; }
 
-  /* ADICIONAIS */
+  /* ESTILO DOS ADICIONAIS */
   .addition-item { display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.3); padding: 8px 12px; border-radius: 6px; margin-bottom: 6px; font-size: 0.85rem; }
   .addition-item button { color: #ff6b6b; background: none; font-size: 1.2rem; cursor: pointer; }
   .add-addition-box { display: flex; gap: 8px; margin-bottom: 10px; }
   .add-addition-box input { flex: 1; padding: 8px; }
   .add-addition-box button { background: var(--gold); color: #000; padding: 0 12px; border-radius: 6px; font-weight: bold; }
-
-  /* LOGO */
-  .logo-img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; }
-  .logo-text { font-size: 1rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
 </style>
 </head>
 <body>
@@ -114,10 +91,7 @@
 
 <div class="admin-panel" id="adminPanel">
   <header class="admin-header">
-    <div style="display:flex; align-items:center; gap:16px;">
-      <img src="imagem/logo.png" alt="Logo" class="logo-img">
-      <h1>Painel Administrativo</h1>
-    </div>
+    <h1>Painel Administrativo</h1>
     <div style="display:flex; gap:10px;">
       <a href="index.html" style="color:var(--gold); text-decoration:none; padding:8px 16px; border:1px solid var(--gold); border-radius:50px; font-size:0.9rem;">Ver site</a>
       <button id="logoutBtn" class="btn-logout">Sair</button>
@@ -197,7 +171,7 @@ const $ = s => document.querySelector(s);
 const $$ = s => document.querySelectorAll(s);
 let token = localStorage.getItem('adminToken');
 let categories = [];
-let currentAdditions = []; 
+let currentAdditions = []; // Guarda os adicionais do produto atual
 
 function authFetch(url, opts = {}) {
   opts.headers = { ...(opts.headers || {}), Authorization: `Bearer ${token}` };
@@ -307,6 +281,7 @@ async function loadProducts() {
   `).join('');
 }
 
+// RENDERIZAR LISTA DE ADICIONAIS
 function renderAdditions() {
   $('#additionsList').innerHTML = currentAdditions.map((a, index) => `
     <div class="addition-item">
