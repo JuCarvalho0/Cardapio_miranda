@@ -2,205 +2,375 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Espetinho do Miranda — Delícias na Brasa</title>
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Espetinho do Miranda</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,600;1,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
   :root {
-    --bg: #0d0c0b;
+    --bg: #0a0908;
     --bg-card: #131211;
     --gold: #d3b574;
-    --gold-light: #e8d3a7;
     --text: #f7f5f0;
     --text-muted: #a09b92;
+    --border: rgba(255,255,255,0.08);
   }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
   
-  /* FONTE BASE (Oswald) */
   body { 
     font-family: 'Oswald', sans-serif; 
     background: var(--bg); 
     color: var(--text); 
-    line-height: 1.6; 
-    letter-spacing: 0.5px;
-    -webkit-font-smoothing: antialiased; 
+    line-height: 1.4; 
+    /* Aumentado para 110px para dar espaço à logo de 90px e ao padding */
+    padding-top: 110px; 
+    padding-bottom: 20px;
+    -webkit-tap-highlight-color: transparent; 
   }
   
-  /* EXCEÇÃO: FRASE PRINCIPAL (Montserrat) */
-  .hero-text h1 { 
-    font-family: 'Montserrat', sans-serif !important; 
-    font-weight: 700;
-    font-size: clamp(3rem, 5vw, 4.5rem); 
-    line-height: 1.1; 
-    margin-bottom: 24px; 
-  }
-  
-  .hero-text h1 em { font-style: italic; color: var(--gold); }
-
-  /* APLICA OSWALD EM TUDO */
-  h2, h3, p, span, a, button, input, .title-serif, .logo-text, 
-  .card-header h3, .card-price, .card-tag, .search-bar input, 
-  .category-tabs button, .hero-text p, .hero-hours, .btn-primary, .btn-top, footer {
-    font-family: 'Oswald', sans-serif !important; 
-  }
-  
-  button { cursor: pointer; border: none; transition: .3s; }
-  a { color: inherit; text-decoration: none; }
+  a { cursor: pointer; text-decoration: none; transition: .3s; }
+  button { cursor: pointer; border: none; transition: .3s; background: transparent; }
   img { max-width: 100%; display: block; }
 
-  /* HEADER */
-  header { position: fixed; top: 0; width: 100%; z-index: 100; background: rgba(13, 12, 11, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,0.05); }
-  .header-inner { max-width: 1200px; margin: 0 auto; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; }
-  .logo-area { display: flex; align-items: center; gap: 16px; }
-  .logo-img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; }
-  .logo-text { font-size: 1.1rem; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; }
-  .btn-top { background: var(--gold); color: #000; padding: 10px 24px; border-radius: 50px; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
-  .btn-top:hover { background: var(--gold-light); }
-
-  /* HERO */
-  .hero { padding: 160px 24px 80px; max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
-  .hero-text .subtitle { color: var(--gold); font-size: 0.95rem; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 16px; }
-  .hero-text p { color: var(--text-muted); font-size: 1.05rem; max-width: 450px; margin-bottom: 20px; font-weight: 400; }
-  
-  /* HORÁRIO */
-  .hero-hours { display: flex; align-items: center; gap: 8px; color: var(--gold); font-size: 1rem; margin-bottom: 32px; font-weight: 400; }
-  .hero-hours svg { width: 18px; height: 18px; fill: var(--gold); }
-
-  .hero-buttons { display: flex; gap: 16px; flex-wrap: wrap; }
-  .btn-primary { background: var(--gold); color: #000; padding: 14px 28px; border-radius: 50px; font-size: 1rem; font-weight: 500; display: inline-flex; align-items: center; gap: 8px; }
-  .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
-
-  /* FOTO DO HERO */
-  .hero-image-wrapper { position: relative; display: flex; align-items: center; justify-content: center; width: 100%; max-width: 550px; margin: 0 auto; }
-  .hero-image-wrapper img { width: 100%; height: auto; object-fit: contain; display: block; border-radius: 30px; mask-image: radial-gradient(ellipse at center, black 65%, transparent 100%); -webkit-mask-image: radial-gradient(ellipse at center, black 65%, transparent 100%); filter: drop-shadow(0 0 30px rgba(211, 181, 116, 0.15)); }
-
-  /* CARDÁPIO */
-  .menu-section { padding: 80px 24px 120px; max-width: 1200px; margin: 0 auto; }
-  .section-header { text-align: center; margin-bottom: 48px; }
-  .section-header .subtitle { color: var(--gold); font-size: 0.95rem; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 12px; }
-  .section-header h2 { font-size: clamp(2.5rem, 4vw, 3.5rem); color: var(--text); }
-  .section-header p { color: var(--text-muted); font-size: 1.05rem; margin-top: 12px; max-width: 500px; margin-left: auto; margin-right: auto; font-weight: 400; }
-
-  .search-bar { margin-bottom: 32px; }
-  .search-bar input { width: 100%; padding: 16px 24px 16px 48px; border-radius: 50px; border: 1px solid rgba(255,255,255,0.1); background: var(--bg-card); color: var(--text); font-size: 1rem; outline: none; font-weight: 400; }
-  .search-bar input:focus { border-color: var(--gold); }
-  .search-wrapper { position: relative; }
-  .search-icon { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; fill: var(--text-muted); }
-
-  .category-tabs { display: flex; gap: 12px; justify-content: center; overflow-x: auto; padding-bottom: 20px; margin-bottom: 40px; scrollbar-width: none; }
-  .category-tabs::-webkit-scrollbar { display: none; }
-  .category-tabs button { background: transparent; border: 1px solid rgba(255,255,255,0.1); color: var(--text-muted); padding: 10px 24px; border-radius: 50px; white-space: nowrap; font-size: 0.9rem; font-weight: 500; }
-  .category-tabs button.active, .category-tabs button:hover { background: var(--gold); color: #000; border-color: var(--gold); }
-
-  /* CARDS DE PRODUTO */
-  .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; }
-  .menu-card { background: var(--bg-card); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; transition: .3s; }
-  .menu-card:hover { border-color: rgba(211, 181, 116, 0.3); transform: translateY(-3px); }
-  .menu-card-img { position: relative; height: 200px; background: #222; }
-  .menu-card-img img { width: 100%; height: 100%; object-fit: cover; }
-  .menu-card-img .placeholder { display: grid; place-items: center; height: 100%; }
-  .menu-card-img .placeholder svg { width: 50px; height: 50px; fill: var(--text-muted); opacity: 0.5; }
-  
-  .menu-card-body { padding: 24px; display: flex; flex-direction: column; flex: 1; }
-  .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; gap: 12px; }
-  .card-header h3 { font-size: 1.3rem; font-weight: 600; color: var(--text); }
-  .card-price { font-size: 1.2rem; font-weight: 600; color: var(--gold); white-space: nowrap; }
-  .menu-card p { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 20px; flex: 1; line-height: 1.5; font-weight: 400; }
-  .card-tag { font-size: 0.75rem; font-weight: 600; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 16px; }
-  
-  .badge-featured { position: absolute; top: 16px; left: 16px; background: var(--gold); color: #000; font-size: 0.7rem; font-weight: 700; padding: 6px 14px; border-radius: 50px; z-index: 2; text-transform: uppercase; letter-spacing: 1px; }
-  .badge-unavailable { position: absolute; top: 16px; right: 16px; background: #333; color: #fff; font-size: 0.7rem; font-weight: 700; padding: 6px 14px; border-radius: 50px; z-index: 2; }
-  .empty { text-align: center; color: var(--text-muted); padding: 60px 0; grid-column: 1/-1; font-style: italic; }
-
-  /* ADICIONAIS NO SITE */
-  .card-additions { background: rgba(211, 181, 116, 0.05); border: 1px dashed rgba(211, 181, 116, 0.3); padding: 10px; border-radius: 8px; margin-bottom: 16px; display: flex; flex-direction: column; gap: 4px; }
-  .card-additions span { font-size: 0.75rem; color: var(--gold); font-weight: 600; text-transform: uppercase; }
-  .card-additions small { font-size: 0.8rem; color: var(--text-muted); }
-
-  /* NOVO RODAPÉ - INFORMAÇÕES DA LOJA */
-  .store-info { background: var(--bg-card); border-top: 1px solid rgba(255,255,255,0.05); padding: 60px 24px 20px; }
-  .store-info-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; }
-  .info-block h3 { color: var(--gold); font-size: 1.1rem; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 1px; }
-  .info-card { display: flex; align-items: center; gap: 12px; background: rgba(0,0,0,0.3); padding: 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); }
-  .info-card svg { width: 24px; height: 24px; fill: var(--gold); flex-shrink: 0; }
-  .info-card span { font-size: 0.95rem; color: var(--text-muted); }
-  .payment-methods { display: flex; flex-direction: column; gap: 12px; }
-  .payment-item { display: flex; align-items: center; gap: 12px; background: rgba(0,0,0,0.3); padding: 12px 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); }
-  .payment-icon { width: 40px; height: 40px; background: var(--bg); border-radius: 8px; display: grid; place-items: center; color: var(--gold); font-weight: 700; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.1); flex-shrink: 0; }
-  .payment-item strong { display: block; font-size: 0.95rem; color: var(--text); margin-bottom: 2px; }
-  .payment-item small { display: block; font-size: 0.8rem; color: var(--text-muted); }
-  .footer-bottom { text-align: center; padding-top: 40px; margin-top: 40px; border-top: 1px solid rgba(255,255,255,0.05); color: var(--text-muted); font-size: 0.8rem; }
-
-  @media(max-width: 900px) {
-    .hero { grid-template-columns: 1fr; text-align: center; padding-top: 120px; gap: 40px; }
-    .hero-text p { margin: 0 auto 20px; }
-    .hero-hours { justify-content: center; }
-    .hero-buttons { justify-content: center; }
-    .menu-grid { grid-template-columns: 1fr; }
-    .hero-image-wrapper img { max-width: 400px; }
-    .store-info-inner { grid-template-columns: 1fr; gap: 30px; }
+  /* =========================================
+     HEADER - ESTILO APP (CORRIGIDO)
+     ========================================= */
+  header { 
+    position: fixed; top: 0; left: 0; width: 100%; z-index: 100;
+    background: transparent; 
+    display: flex; justify-content: space-between; align-items: center;
+    
+    /* MUDANÇA AQUI: Padding de 15px nas laterais para não encostar na borda */
+    padding: 10px 20px; 
+    height: 110px; /* Altura para caber a logo de 90px */
+    transition: background 0.4s ease, backdrop-filter 0.4s ease, box-shadow 0.4s ease;
   }
+
+  header.scrolled {
+    background: rgba(10, 9, 8, 0.95);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  }
+
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(211, 181, 116, 0.6), transparent);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  header.scrolled::after { opacity: 1; }
+  
+  /* Logo configurada para 90px */
+  .logo-img { 
+    width: 90px; 
+    height: 90px; 
+    object-fit: contain; 
+  }
+  
+  .header-actions { display: flex; align-items: center; }
+  .menu-btn { color: var(--gold); font-size: 2rem; }
+
+  /* =========================================
+     MENU LATERAL (SIDEBAR)
+     ========================================= */
+  .sidebar {
+    position: fixed; top: 0; right: -300px; width: 260px; height: 100vh;
+    background: var(--bg-card); z-index: 200;
+    transition: right 0.4s ease; padding: 20px;
+    border-left: 1px solid var(--border);
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .sidebar.open { right: 0; }
+  
+  .sidebar-header { display: flex; justify-content: flex-end; margin-bottom: 20px; }
+  .sidebar-close { color: var(--gold); font-size: 1.5rem; }
+  
+  .sidebar a {
+    color: var(--text); font-size: 1.1rem; display: flex; align-items: center; gap: 12px;
+    padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .sidebar a:hover { color: var(--gold); }
+  .sidebar a i { color: var(--gold); width: 20px; text-align: center; }
+  
+  .overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(3px); z-index: 150;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s;
+  }
+  .overlay.open { opacity: 1; pointer-events: all; }
+
+  /* =========================================
+     BANNER (HERO)
+     ========================================= */
+  .hero {
+    position: relative; width: 100%; height: 260px; 
+    background: #0a0908 url('imagem/ptr.png') center/cover no-repeat; 
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 20px; margin: 0 auto; overflow: hidden;
+  }
+
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(
+      to bottom, 
+      rgba(10, 9, 8, 1) 0%,    
+      rgba(10, 9, 8, 0.7) 20%, 
+      transparent 55%,         
+      transparent 70%,
+      rgba(10, 9, 8, 0.9) 100% 
+    );
+    z-index: 1;
+  }
+
+  .hero-content { position: relative; z-index: 2; margin-bottom: 5px; }
+  
+  .btn-hero {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(10, 9, 8, 0.9); color: var(--gold);
+    border: 1px solid var(--gold); padding: 10px 18px; border-radius: 50px;
+    font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;
+    text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.8);
+  }
+  .btn-hero:hover { background: var(--gold); color: #000; text-shadow: none; }
+
+  /* =========================================
+     BARRA DE PESQUISA
+     ========================================= */
+  .search-container { padding: 15px 15px 0; position: relative; z-index: 10; max-width: 1200px; margin: 0 auto; }
+  .search-wrapper { position: relative; }
+  .search-icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; fill: var(--gold); }
+  .search-bar input { 
+    width: 100%; padding: 14px 15px 14px 40px; border-radius: 50px; 
+    border: 1px solid rgba(211, 181, 116, 0.3); background: rgba(19, 18, 17, 0.8); 
+    color: var(--text); font-size: 0.9rem; outline: none; font-family: 'Oswald', sans-serif; transition: 0.3s;
+    text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.5);
+  }
+  .search-bar input:focus { border-color: var(--gold); background: var(--bg-card); box-shadow: 0 0 10px rgba(211, 181, 116, 0.1); }
+
+  /* =========================================
+     CATEGORIAS
+     ========================================= */
+  .category-tabs { 
+    display: flex; gap: 8px; overflow-x: auto; padding: 15px;
+    scrollbar-width: none; background: var(--bg); max-width: 1200px; margin: 0 auto;
+  }
+  .category-tabs::-webkit-scrollbar { display: none; }
+  
+  .category-tabs button { 
+    display: flex; align-items: center; gap: 6px;
+    background: transparent; border: 1px solid var(--border); 
+    color: var(--text-muted); padding: 10px 16px; 
+    border-radius: 20px; white-space: nowrap; font-size: 0.85rem; font-weight: 500; 
+    text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.8);
+  }
+  .category-tabs button i { font-size: 1rem; color: var(--gold); }
+  
+  .category-tabs button.active, .category-tabs button:hover { 
+    background: var(--gold); color: #000; border-color: var(--gold); text-shadow: none;
+  }
+  .category-tabs button.active i, .category-tabs button:hover i { color: #000; }
+
+  /* =========================================
+     TÍTULO DA SEÇÃO
+     ========================================= */
+  .section-title { padding: 10px 15px; display: flex; flex-direction: column; max-width: 1200px; margin: 0 auto; }
+  .section-title .title-main {
+    display: flex; align-items: center; gap: 8px;
+    font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 600; color: #fff;
+    text-shadow: 
+      -1px -1px 0 #000,  
+       1px -1px 0 #000,
+      -1px  1px 0 #000,
+       1px  1px 0 #000,
+       0px  3px 6px rgba(0,0,0,1); 
+  }
+  .section-title .title-main i { color: var(--gold); font-size: 1rem; }
+  .section-title .title-sub { 
+    font-size: 0.8rem; color: var(--text-muted); margin-left: 24px; 
+    text-shadow: 
+      -1px -1px 0 #000,  
+       1px -1px 0 #000,
+      -1px  1px 0 #000,
+       1px  1px 0 #000; 
+  }
+
+  /* =========================================
+     LISTA DE PRODUTOS
+     ========================================= */
+  .menu-list { padding: 0 15px 20px; display: flex; flex-direction: column; gap: 12px; max-width: 1200px; margin: 0 auto; }
+  
+  .product-card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 16px; padding: 12px; display: flex; align-items: center; gap: 15px;
+    position: relative; overflow: hidden;
+  }
+  
+  .product-img {
+    width: 80px; height: 80px; border-radius: 12px; object-fit: cover; flex-shrink: 0;
+    background: #222; display: grid; place-items: center;
+  }
+  .product-img img { width: 100%; height: 100%; object-fit: cover; border-radius: 12px; }
+  .product-img i { font-size: 1.8rem; color: #444; }
+
+  .product-info { flex: 1; }
+  .product-info h3 { 
+    font-size: 1rem; font-weight: 600; color: #fff; margin-bottom: 2px; 
+    text-shadow: 
+      -1px -1px 0 #000,  
+       1px -1px 0 #000,
+      -1px  1px 0 #000,
+       1px  1px 0 #000; 
+  }
+  .product-info p { 
+    font-size: 0.75rem; color: var(--text-muted); margin-bottom: 6px; line-height: 1.2; 
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    text-shadow: 
+      -1px -1px 0 #000,  
+       1px -1px 0 #000,
+      -1px  1px 0 #000,
+       1px  1px 0 #000; 
+  }
+  .product-info .price { 
+    font-size: 1rem; font-weight: 600; color: var(--gold); 
+    text-shadow: 
+      -1px -1px 0 #000,  
+       1px -1px 0 #000,
+      -1px  1px 0 #000,
+       1px  1px 0 #000,
+       0px 2px 4px rgba(0,0,0,0.8); 
+  }
+  
+  .badge-featured { 
+    position: absolute; top: 0; right: 0; 
+    background: var(--gold); color: #000; font-size: 0.55rem; font-weight: 700; 
+    padding: 4px 10px; border-bottom-left-radius: 12px; text-transform: uppercase;
+  }
+  .badge-unavailable { 
+    position: absolute; top: 0; right: 0; 
+    background: #333; color: #fff; font-size: 0.55rem; font-weight: 700; 
+    padding: 4px 10px; border-bottom-left-radius: 12px;
+  }
+
+  /* Adicionais */
+  .card-additions { 
+    background: rgba(211, 181, 116, 0.08); border: 1px dashed rgba(211, 181, 116, 0.4); 
+    padding: 8px; border-radius: 8px; margin-top: 8px; display: flex; flex-direction: column; gap: 4px; 
+  }
+  .card-additions span { font-size: 0.65rem; color: var(--gold); font-weight: 600; text-transform: uppercase; text-shadow: 0px 1px 2px rgba(0,0,0,0.8); }
+  .card-additions small { font-size: 0.75rem; color: var(--text-muted); display: block; text-shadow: 0px 1px 2px rgba(0,0,0,0.8); }
+
+  /* =========================================
+     SOBRE (INFORMAÇÕES E PAGAMENTO)
+     ========================================= */
+  .store-info { background: var(--bg-card); border-top: 1px solid var(--border); padding: 30px 15px 20px; margin-top: 20px; }
+  .store-info-inner { max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
+  .info-block h3 { color: var(--gold); font-size: 0.95rem; margin-bottom: 10px; text-transform: uppercase; text-shadow: 0px 1px 2px rgba(0,0,0,0.8); }
+  .info-card { 
+    display: flex; align-items: center; gap: 10px; 
+    background: rgba(0,0,0,0.3); padding: 14px; border-radius: 10px; border: 1px solid var(--border); 
+  }
+  .info-card svg { width: 20px; height: 20px; fill: var(--gold); flex-shrink: 0; }
+  .info-card span { font-size: 0.85rem; color: var(--text-muted); text-shadow: 0px 1px 2px rgba(0,0,0,0.8); }
+  
+  .payment-methods { display: flex; flex-direction: column; gap: 10px; }
+  .payment-item { 
+    display: flex; align-items: center; gap: 10px; 
+    background: rgba(0,0,0,0.3); padding: 12px; border-radius: 10px; border: 1px solid var(--border); 
+  }
+  .payment-icon { 
+    width: 35px; height: 35px; background: var(--bg); border-radius: 8px; 
+    display: grid; place-items: center; color: var(--gold); font-weight: 700; font-size: 0.9rem; 
+    flex-shrink: 0; 
+  }
+  .payment-item strong { display: block; font-size: 0.85rem; color: var(--text); margin-bottom: 2px; text-shadow: 0px 1px 2px rgba(0,0,0,0.8); }
+  .payment-item small { display: block; font-size: 0.7rem; color: var(--text-muted); text-shadow: 0px 1px 2px rgba(0,0,0,0.8); }
+  
+  .footer-bottom { text-align: center; padding-top: 20px; margin-top: 20px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.75rem; text-shadow: 0px 1px 2px rgba(0,0,0,0.8); }
+
+  /* =========================================
+     BOTÃO VOLTAR AO TOPO
+     ========================================= */
+  .back-to-top {
+    position: fixed; bottom: 20px; right: 15px;
+    width: 45px; height: 45px; background: var(--bg-card); color: var(--gold);
+    border: 1px solid var(--gold); border-radius: 50%;
+    display: flex; justify-content: center; align-items: center; font-size: 1.1rem;
+    z-index: 99; opacity: 0; visibility: hidden; transform: translateY(20px);
+    transition: 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+  }
+  .back-to-top.show { opacity: 1; visibility: visible; transform: translateY(0); }
+  .back-to-top:hover { background: var(--gold); color: #000; }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="header-inner">
-    <div class="logo-area">
-      <img src="imagem/logo.png" alt="Logo" class="logo-img">
-      <div class="logo-text">Espetinho do Miranda</div>
-    </div>
-    <a href="admin.html" class="btn-top">Login / Admin</a>
+<!-- OVERLAY (Fundo escuro do menu) -->
+<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+<!-- MENU LATERAL (Sidebar) -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <button class="sidebar-close" onclick="toggleMenu()"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <a href="#" onclick="toggleMenu(); window.scrollTo({top:0, behavior:'smooth'});"><i class="fa-solid fa-house"></i> Início</a>
+  <a href="#cardapio" onclick="toggleMenu()"><i class="fa-solid fa-book-open"></i> Cardápio</a>
+  <a href="#sobre" onclick="toggleMenu()"><i class="fa-solid fa-circle-info"></i> Informações importantes</a>
+  <a href="admin.html"><i class="fa-solid fa-user-gear"></i> Painel Admin</a>
+</div>
+
+<!-- HEADER -->
+<header id="mainHeader">
+  <img src="imagem/logo.png" alt="Espetinho do Miranda" class="logo-img">
+  <div class="header-actions">
+    <button class="menu-btn" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></button>
   </div>
 </header>
 
+<!-- BANNER (HERO) -->
 <section class="hero">
-  <div class="hero-text">
-    <div class="subtitle">Delícias na Brasa</div>
-    <h1>O sabor que <br>vem direto <em>da <br>brasa.</em></h1>
-    <p>Espetinhos preparados com carinho, aquele aroma irresistível de churrasco e o sabor que reúne todo mundo à mesa.</p>
-    
-    <div class="hero-hours">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"/><path d="M13 7h-2v6l5.25 3.15.75-1.23-4-2.37z"/></svg>
-      <span id="hoursBadge">Carregando horário...</span>
-    </div>
-
-    <div class="hero-buttons">
-      <a href="#cardapio" class="btn-primary">Explorar cardápio ↓</a>
-    </div>
-  </div>
-  
-  <div class="hero-image-wrapper">
-    <img src="imagem/prt.png" alt="Espetinho na brasa">
+  <div class="hero-content">
+    <a href="#cardapio" class="btn-hero"><i class="fa-solid fa-utensils"></i> Ver Cardápio</a>
   </div>
 </section>
 
-<section class="menu-section" id="cardapio">
-  <div class="section-header">
-    <div class="subtitle">Feito na brasa. Servido com capricho.</div>
-    <h2>Nosso cardápio</h2>
-    <p>Escolha seus favoritos e chame o garçom para fazer o pedido.</p>
+<!-- BARRA DE PESQUISA -->
+<div class="search-container">
+  <div class="search-wrapper search-bar">
+    <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 18a7.952 7.952 0 0 0 4.897-1.688l4.396 4.396 1.414-1.414-4.396-4.396A7.952 7.952 0 0 0 18 10c0-4.411-3.589-8-8-8s-8 3.589-8 8 3.589 8 8 8zm0-14c3.309 0 6 2.691 6 6s-2.691 6-6 6-6-2.691-6-6 2.691-6 6-6z"/></svg>
+    <input type="text" id="searchInput" placeholder="Buscar no cardápio...">
   </div>
+</div>
 
-  <div class="search-bar">
-    <div class="search-wrapper">
-      <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 18a7.952 7.952 0 0 0 4.897-1.688l4.396 4.396 1.414-1.414-4.396-4.396A7.952 7.952 0 0 0 18 10c0-4.411-3.589-8-8-8s-8 3.589-8 8 3.589 8 8 8zm0-14c3.309 0 6 2.691 6 6s-2.691 6-6 6-6-2.691-6-6 2.691-6 6-6z"/></svg>
-      <input type="text" id="searchInput" placeholder="O que você deseja saborear hoje?">
-    </div>
+<!-- CATEGORIAS -->
+<div class="category-tabs" id="categoryTabs"></div>
+
+<!-- TÍTULO DO CARDÁPIO -->
+<div class="section-title" id="cardapio">
+  <div class="title-main" id="currentCategoryTitle">
+    <i class="fa-solid fa-utensils"></i> Cardápio
   </div>
+  <div class="title-sub">Feitos na brasa, com muito sabor!</div>
+</div>
 
-  <div class="category-tabs" id="categoryTabs"></div>
-  <div class="menu-grid" id="menuList"></div>
-</section>
+<!-- LISTA DE PRODUTOS -->
+<div class="menu-list" id="menuList"></div>
 
-<footer class="store-info">
+<!-- SOBRE (INFORMAÇÕES E PAGAMENTO) -->
+<footer class="store-info" id="sobre">
   <div class="store-info-inner">
     <div class="info-block">
       <h3>Horário de Atendimento</h3>
       <div class="info-card">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"/><path d="M13 7h-2v6l5.25 3.15.75-1.23-4-2.37z"/></svg>
-        <span id="infoHorario">Carregando horário...</span>
+        <span id="infoHorario">Ter–Dom, 18h às 23h</span>
       </div>
     </div>
 
@@ -208,7 +378,7 @@
       <h3>Endereço / Localização</h3>
       <div class="info-card">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>
-        <span id="infoEndereco">Carregando endereço...</span>
+        <span id="infoEndereco">Rua Principal, 123 - Centro</span>
       </div>
     </div>
 
@@ -216,15 +386,15 @@
       <h3>Formas de Pagamento</h3>
       <div class="payment-methods">
         <div class="payment-item">
-          <div class="payment-icon">Pix</div>
+          <div class="payment-icon"><i class="fa-solid fa-bolt"></i></div>
           <div><strong>Pix</strong><small>Pagamento online</small></div>
         </div>
         <div class="payment-item">
-          <div class="payment-icon">💳</div>
+          <div class="payment-icon"><i class="fa-solid fa-credit-card"></i></div>
           <div><strong>Cartão de Crédito</strong><small>Online ou na entrega</small></div>
         </div>
         <div class="payment-item">
-          <div class="payment-icon">💵</div>
+          <div class="payment-icon"><i class="fa-solid fa-money-bill-wave"></i></div>
           <div><strong>Dinheiro</strong><small>Pagamento na entrega</small></div>
         </div>
       </div>
@@ -236,7 +406,40 @@
   </div>
 </footer>
 
+<!-- BOTÃO VOLTAR AO TOPO -->
+<button id="backToTop" class="back-to-top" onclick="window.scrollTo({top:0, behavior:'smooth'});">
+  <i class="fa-solid fa-arrow-up"></i>
+</button>
+
 <script>window.API_URL = 'http://127.0.0.1:4000';</script>
 <script src="js/app.js"></script>
+
+<!-- SCRIPT DO MENU E DO BOTÃO VOLTAR AO TOPO -->
+<script>
+  function toggleMenu() {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+    sidebar.classList.toggle('open');
+    overlay.classList.toggle('open');
+  }
+
+  const mainHeader = document.getElementById('mainHeader');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) {
+      mainHeader.classList.add('scrolled');
+    } else {
+      mainHeader.classList.remove('scrolled');
+    }
+  });
+
+  const backToTopBtn = document.getElementById('backToTop');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 300) {
+      backToTopBtn.classList.add('show');
+    } else {
+      backToTopBtn.classList.remove('show');
+    }
+  });
+</script>
 </body>
 </html>
