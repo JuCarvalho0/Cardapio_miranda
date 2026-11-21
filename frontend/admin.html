@@ -270,9 +270,9 @@ async function loadProducts() {
   const prods = await authFetch(`${API}/api/products/all`).then(r => r.json());
   $('#productList').innerHTML = prods.map(p => `
     <div class="admin-card">
-      <strong>${p.name} ${p.featured ? '⭐' : ''}</strong>
+      <strong>${p.name} ${p.featured ? '' : ''}</strong>
       <small>${p.category?.name || 'Sem categoria'} • R$ ${p.price.toFixed(2).replace('.', ',')}</small>
-      <small>${p.active ? '✅ Ativo' : '⛔ Inativo'} ${p.unavailable ? '• 🚫 Esgotado' : ''}</small>
+      <small>${p.active ? ' Ativo' : ' Inativo'} ${p.unavailable ? '•  Esgotado' : ''}</small>
       <div class="card-actions">
         <button onclick="editProduct('${p._id}')">Editar</button>
         <button onclick="deleteProduct('${p._id}')" class="danger">Excluir</button>

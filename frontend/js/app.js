@@ -128,8 +128,8 @@ function render() {
         <div class="price">R$ ${fmt(p.price)}</div>
         ${additionsHtml}
       </div>
-      ${p.featured ? '<span class="badge-featured">⭐ DESTAQUE</span>' : ''}
-      ${p.unavailable ? '<span class="badge-unavailable">🚫 ESGOTADO</span>' : ''}
+      ${p.featured ? '<span class="badge-featured"> DESTAQUE</span>' : ''}
+      ${p.unavailable ? '<span class="badge-unavailable"> ESGOTADO</span>' : ''}
     </div>`;
   }).join('');
 }
