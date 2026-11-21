@@ -37,26 +37,3 @@ Você vai precisar ter instalado na sua máquina:
 ### 2. Clonando o repositório
 ```bash
 git clone https://github.com/seu-usuario/espetinho-miranda.git
-cd espetinho-
-
-
-# Conexão com o MongoDB Atlas
-MONGO_URI=mongodb://espetinhodomiranda1_db_user:arrozcomovo@ac-x2o4nzw-shard-00-00.t6flyhk.mongodb.net:27017,ac-x2o4nzw-shard-00-01.t6flyhk.mongodb.net:27017,ac-x2o4nzw-shard-00-02.t6flyhk.mongodb.net:27017/?ssl=true&replicaSet=atlas-c1dbs2-shard-0&authSource=admin
-
-# Chave secreta para geração de Tokens de Login
-JWT_SECRET=uma_chave_gigante_aleatoria_123456789
-
-# Credenciais do Cloudinary (para upload de imagens)
-CLOUDINARY_CLOUD_NAME=bpkvaquy
-CLOUDINARY_API_KEY=623476912522625
-CLOUDINARY_API_SECRET=DbII9x-MzwVabMHXYr43H-Ng4ZE
-
-# Configurações do Administrador Inicial
-ADMIN_EMAIL=espetinhodomiranda@yahoo.com
-ADMIN_PASSWORD=JahTFK56
-
-# URL do Frontend (para CORS)
-FRONTEND_URL=*
-
-# Porta do Servidor
-PORT=4000
