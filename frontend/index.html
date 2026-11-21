@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Espetinho do Miranda — Delícias na Brasa</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0c0b;
+    --bg-card: #131211;
+    --gold: #d3b574;
+    --gold-light: #e8d3a7;
+    --text: #f7f5f0;
+    --text-muted: #a09b92;
+    --border: rgba(255,255,255,0.05);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  body { 
+    font-family: 'Oswald', sans-serif; 
+    background: var(--bg); 
+    color: var(--text); 
+    line-height: 1.6; 
+    letter-spacing: 0.5px;
+    -webkit-font-smoothing: antialiased; 
+  }
+  
+  .hero-text h1 { 
+    font-family: 'Montserrat', sans-serif !important; 
+    font-weight: 700;
+    font-size: clamp(3rem, 5vw, 4.5rem); 
+    line-height: 1.1; 
+    margin-bottom: 24px; 
+  }
+  
+  .hero-text h1 em { font-style: italic; color: var(--gold); }
+
+  h2, h3, p, span, a, button, input, .logo-text, 
+  .search-bar input, .category-tabs button, 
+  .hero-text p, .hero-hours, .btn-primary, .btn-top, footer, .card-header h3, .card-price {
+    font-family: 'Oswald', sans-serif !important; 
+  }
+  
+  button { cursor: pointer; border: none; transition: .3s; }
+  a { color: inherit; text-decoration: none; }
+  img { max-width: 100%; display: block; }
+
+  /* HEADER */
+  header { position: fixed; top: 0; width: 100%; z-index: 100; background: rgba(13, 12, 11, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); }
+  .header-inner { max-width: 1200px; margin: 0 auto; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; }
+  .logo-area { display: flex; align-items: center; gap: 16px; }
+  .logo-img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; }
+  .logo-text { font-size: 1.1rem; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; }
+  .btn-top { background: var(--gold); color: #000; padding: 10px 24px; border-radius: 50px; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+  .btn-top:hover { background: var(--gold-light); }
+
+  /* HERO */
+  .hero { padding: 140px 24px 60px; max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+  .hero-text .subtitle { color: var(--gold); font-size: 0.95rem; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 16px; }
+  .hero-text p { color: var(--text-muted); font-size: 1.05rem; max-width: 450px; margin-bottom: 20px; font-weight: 400; }
+  .hero-hours { display: flex; align-items: center; gap: 8px; color: var(--gold); font-size: 1rem; margin-bottom: 32px; font-weight: 400; }
+  .hero-hours svg { width: 18px; height: 18px; fill: var(--gold); }
+  .hero-buttons { display: flex; gap: 16px; flex-wrap: wrap; }
+  .btn-primary { background: var(--gold); color: #000; padding: 14px 28px; border-radius: 50px; font-size: 1rem; font-weight: 500; display: inline-flex; align-items: center; gap: 8px; }
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
+  .hero-image-wrapper { position: relative; display: flex; align-items: center; justify-content: center; width: 100%; max-width: 550px; margin: 0 auto; }
+  .hero-image-wrapper img { width: 100%; height: auto; object-fit: contain; display: block; border-radius: 30px; mask-image: radial-gradient(ellipse at center, black 65%, transparent 100%); -webkit-mask-image: radial-gradient(ellipse at center, black 65%, transparent 100%); filter: drop-shadow(0 0 30px rgba(211, 181, 116, 0.15)); }
+
+  /* CARDÁPIO */
+  .menu-section { padding: 20px 24px 80px; max-width: 1200px; margin: 0 auto; }
+  .section-header { text-align: center; margin-bottom: 32px; }
+  .section-header h2 { font-size: clamp(2rem, 4vw, 3rem); color: var(--text); }
+
+  .sticky-filters { position: sticky; top: 92px; background: var(--bg); z-index: 90; padding: 16px 0; border-bottom: 1px solid var(--border); margin-bottom: 24px; }
+  .search-bar { margin-bottom: 16px; }
+  .search-bar input { width: 100%; padding: 12px 24px 12px 48px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-card); color: var(--text); font-size: 1rem; outline: none; font-weight: 400; }
+  .search-bar input:focus { border-color: var(--gold); }
+  .search-wrapper { position: relative; max-width: 600px; margin: 0 auto; }
+  .search-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; fill: var(--text-muted); }
+  .category-tabs { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 8px; scrollbar-width: none; justify-content: center; }
+  .category-tabs::-webkit-scrollbar { display: none; }
+  .category-tabs button { background: transparent; border: 1px solid var(--border); color: var(--text-muted); padding: 8px 20px; border-radius: 6px; white-space: nowrap; font-size: 0.9rem; font-weight: 500; }
+  .category-tabs button.active, .category-tabs button:hover { background: var(--gold); color: #000; border-color: var(--gold); }
+
+  /* CARDS QUADRADOS */
+  .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; }
+  .menu-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; transition: .3s; }
+  .menu-card:hover { border-color: rgba(211, 181, 116, 0.3); transform: translateY(-3px); }
+  .menu-card-img { position: relative; height: 200px; background: #222; }
+  .menu-card-img img { width: 100%; height: 100%; object-fit: cover; }
+  .menu-card-img .placeholder { display: grid; place-items: center; height: 100%; font-size: 3rem; }
+  
+  .menu-card-body { padding: 24px; display: flex; flex-direction: column; flex: 1; }
+  .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; gap: 12px; }
+  .card-header h3 { font-size: 1.2rem; font-weight: 600; color: var(--text); }
+  .card-price { font-size: 1.1rem; font-weight: 600; color: var(--gold); white-space: nowrap; }
+  .menu-card p { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px; flex: 1; line-height: 1.5; }
+  .card-tag { font-size: 0.65rem; font-weight: 600; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 16px; }
+  
+  .card-additions { background: rgba(211, 181, 116, 0.05); border: 1px dashed rgba(211, 181, 116, 0.3); padding: 10px; border-radius: 8px; margin-bottom: 16px; display: flex; flex-direction: column; gap: 4px; }
+  .card-additions span { font-size: 0.75rem; color: var(--gold); font-weight: 600; text-transform: uppercase; }
+  .card-additions small { font-size: 0.8rem; color: var(--text-muted); }
+
+  .badge-featured { position: absolute; top: 16px; left: 16px; background: var(--gold); color: #000; font-size: 0.65rem; font-weight: 700; padding: 6px 14px; border-radius: 50px; z-index: 2; text-transform: uppercase; letter-spacing: 1px; }
+  .badge-unavailable { position: absolute; top: 16px; right: 16px; background: #333; color: #fff; font-size: 0.65rem; font-weight: 700; padding: 6px 14px; border-radius: 50px; z-index: 2; }
+  .empty { text-align: center; color: var(--text-muted); padding: 60px 0; grid-column: 1/-1; font-style: italic; }
+
+  /* RODAPÉ */
+  .store-info { background: var(--bg-card); border-top: 1px solid var(--border); padding: 60px 24px 20px; margin-top: 40px; }
+  .store-info-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; }
+  .info-block h3 { color: var(--gold); font-size: 1.1rem; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 1px; }
+  .info-card { display: flex; align-items: center; gap: 12px; background: rgba(0,0,0,0.3); padding: 16px; border-radius: 12px; border: 1px solid var(--border); }
+  .info-card svg { width: 24px; height: 24px; fill: var(--gold); flex-shrink: 0; }
+  .info-card span { font-size: 0.95rem; color: var(--text-muted); }
+  .payment-methods { display: flex; flex-direction: column; gap: 12px; }
+  .payment-item { display: flex; align-items: center; gap: 12px; background: rgba(0,0,0,0.3); padding: 12px 16px; border-radius: 12px; border: 1px solid var(--border); }
+  .payment-icon { width: 40px; height: 40px; background: var(--bg); border-radius: 8px; display: grid; place-items: center; color: var(--gold); font-weight: 700; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.1); flex-shrink: 0; }
+  .payment-item strong { display: block; font-size: 0.95rem; color: var(--text); margin-bottom: 2px; }
+  .payment-item small { display: block; font-size: 0.8rem; color: var(--text-muted); }
+  .footer-bottom { text-align: center; padding-top: 40px; margin-top: 40px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.8rem; }
+
+  @media(max-width: 900px) {
+    .hero { grid-template-columns: 1fr; text-align: center; padding-top: 120px; gap: 40px; }
+    .hero-text p { margin: 0 auto 20px; }
+    .hero-hours { justify-content: center; }
+    .hero-buttons { justify-content: center; }
+    .hero-image-wrapper img { max-width: 350px; }
+    .store-info-inner { grid-template-columns: 1fr; gap: 30px; }
+    .sticky-filters { top: 92px; }
+    .menu-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo-area">
+      <img src="imagem/logo.png" alt="Logo" class="logo-img">
+      <div class="logo-text">Espetinho do Miranda</div>
+    </div>
+    <a href="admin.html" class="btn-top">Login / Admin</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-text">
+    <div class="subtitle">Delícias na Brasa</div>
+    <h1>O sabor que <br>vem direto <em>da <br>brasa.</em></h1>
+    <p>Espetinhos preparados com carinho, aquele aroma irresistível de churrasco e o sabor que reúne todo mundo à mesa.</p>
+    
+    <div class="hero-hours">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"/><path d="M13 7h-2v6l5.25 3.15.75-1.23-4-2.37z"/></svg>
+      <span id="hoursBadge">Carregando horário...</span>
+    </div>
+
+    <div class="hero-buttons">
+      <a href="#cardapio" class="btn-primary">Explorar cardápio ↓</a>
+    </div>
+  </div>
+  
+  <div class="hero-image-wrapper">
+    <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1000&auto=format&fit=crop" alt="Espetinho na brasa">
+  </div>
+</section>
+
+<section class="menu-section" id="cardapio">
+  <div class="section-header">
+    <h2>Nosso cardápio</h2>
+  </div>
+
+  <div class="sticky-filters">
+    <div class="search-bar">
+      <div class="search-wrapper">
+        <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 18a7.952 7.952 0 0 0 4.897-1.688l4.396 4.396 1.414-1.414-4.396-4.396A7.952 7.952 0 0 0 18 10c0-4.411-3.589-8-8-8s-8 3.589-8 8 3.589 8 8 8zm0-14c3.309 0 6 2.691 6 6s-2.691 6-6 6-6-2.691-6-6 2.691-6 6-6z"/></svg>
+        <input type="text" id="searchInput" placeholder="O que você deseja saborear hoje?">
+      </div>
+    </div>
+    <div class="category-tabs" id="categoryTabs"></div>
+  </div>
+
+  <div class="menu-grid" id="menuList"></div>
+</section>
+
+<footer class="store-info">
+  <div class="store-info-inner">
+    <div class="info-block">
+      <h3>Horário de Atendimento</h3>
+      <div class="info-card">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"/><path d="M13 7h-2v6l5.25 3.15.75-1.23-4-2.37z"/></svg>
+        <span id="infoHorario">Carregando horário...</span>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <h3>Endereço / Localização</h3>
+      <div class="info-card">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>
+        <span id="infoEndereco">Carregando endereço...</span>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <h3>Formas de Pagamento</h3>
+      <div class="payment-methods">
+        <div class="payment-item">
+          <div class="payment-icon">Pix</div>
+          <div><strong>Pix</strong><small>Pagamento online</small></div>
+        </div>
+        <div class="payment-item">
+          <div class="payment-icon">💳</div>
+          <div><strong>Cartão de Crédito</strong><small>Online ou na entrega</small></div>
+        </div>
+        <div class="payment-item">
+          <div class="payment-icon">💵</div>
+          <div><strong>Dinheiro</strong><small>Pagamento na entrega</small></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="footer-bottom">
+    <p>Espetinho do Miranda • Delícias na Brasa</p>
+  </div>
+</footer>
+
+<script>window.API_URL = 'http://127.0.0.1:4000';</script>
+<script src="js/app.js"></script>
+</body>
+</html>

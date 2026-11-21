@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Espetinho do Miranda</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0c0b; 
+    --bg-card: #131211; 
+    --gold: #d3b574; 
+    --gold-light: #e8d3a7; 
+    --text: #f7f5f0; 
+    --text-muted: #a09b92;
+  }
+  
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  body { 
+    font-family: 'Oswald', sans-serif; 
+    background: var(--bg); 
+    color: var(--text); 
+    line-height: 1.6; 
+    letter-spacing: 0.5px;
+  }
+  
+  h1, h2, h3 { font-family: 'Oswald', sans-serif; font-weight: 600; }
+  button { font-family: 'Oswald', sans-serif; cursor: pointer; border: none; transition: .3s; }
+  input, textarea, select { font-family: 'Oswald', sans-serif; }
+
+  /* TELA DE LOGIN */
+  .login-screen { position: fixed; inset: 0; background: var(--bg); display: grid; place-items: center; z-index: 999; }
+  .login-box { background: var(--bg-card); padding: 40px; border-radius: 16px; border: 1px solid rgba(211,181,116,0.2); width: 100%; max-width: 400px; display: flex; flex-direction: column; gap: 16px; }
+  .login-box h2 { text-align: center; color: var(--gold); font-size: 2rem; margin-bottom: 10px; }
+  .login-box input { padding: 14px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff; outline: none; font-size: 1rem; }
+  .login-box input:focus { border-color: var(--gold); }
+  .login-box button[type="submit"] { background: var(--gold); color: #000; padding: 14px; border-radius: 8px; font-weight: 700; font-size: 1rem; }
+  .error { color: #ff6b6b; font-size: 0.85rem; text-align: center; }
+
+  /* PAINEL */
+  .admin-panel { display: none; max-width: 1200px; margin: 0 auto; padding: 30px 20px; }
+  .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 20px; }
+  .admin-header h1 { font-size: 2rem; color: var(--gold); }
+  .btn-logout { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: var(--text); padding: 8px 16px; border-radius: 50px; }
+  .btn-logout:hover { background: rgba(255,255,255,0.1); }
+  
+  .admin-tabs { display: flex; gap: 10px; margin-bottom: 30px; }
+  .admin-tabs button { background: transparent; border: 1px solid rgba(255,255,255,0.1); color: var(--text-muted); padding: 10px 24px; border-radius: 50px; font-weight: 500; }
+  .admin-tabs button.active { background: var(--gold); color: #000; border-color: var(--gold); }
+  
+  .tab-content { display: none; }
+  .tab-content.active { display: block; animation: fadeIn 0.3s; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  /* FORMULÁRIOS E LISTAS */
+  .btn-primary { background: var(--gold); color: #000; padding: 12px 24px; border-radius: 8px; font-weight: 600; margin-bottom: 20px; }
+  .btn-primary:hover { background: var(--gold-light); }
+  .inline-form { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+  .inline-form input { padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: var(--bg-card); color: #fff; flex: 1; min-width: 150px; }
+  .admin-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+  .admin-card { background: var(--bg-card); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 8px; }
+  .admin-card strong { color: var(--gold); font-size: 1.1rem; }
+  .admin-card small { color: var(--text-muted); font-size: 0.85rem; }
+  .card-actions { display: flex; gap: 8px; margin-top: 10px; }
+  .card-actions button { flex: 1; padding: 8px; border-radius: 6px; background: rgba(255,255,255,0.05); color: var(--text); font-size: 0.8rem; }
+  .card-actions button:hover { background: rgba(255,255,255,0.1); }
+  .card-actions button.danger { color: #ff6b6b; }
+  .card-actions button.danger:hover { background: rgba(255,107,107,0.1); }
+
+  .settings-form { display: flex; flex-direction: column; gap: 16px; max-width: 600px; background: var(--bg-card); padding: 30px; border-radius: 12px; }
+  .settings-form label { display: flex; flex-direction: column; gap: 6px; font-size: 0.9rem; color: var(--text-muted); }
+  .settings-form input, .settings-form textarea { padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.4); color: #fff; }
+  .settings-form input:focus, .settings-form textarea:focus { border-color: var(--gold); outline: none; }
+
+  /* MODAL */
+  .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 20px; }
+  .modal.show { display: flex; }
+  .modal-box { background: var(--bg-card); border: 1px solid var(--gold); border-radius: 16px; padding: 30px; max-width: 500px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative; }
+  .modal-box h3 { font-size: 1.8rem; color: var(--gold); margin-bottom: 20px; }
+  .modal-close { position: absolute; top: 20px; right: 20px; background: none; color: #fff; font-size: 1.5rem; }
+  .modal-box form { display: flex; flex-direction: column; gap: 14px; }
+  .modal-box label { display: flex; flex-direction: column; gap: 6px; font-size: 0.85rem; color: var(--text-muted); }
+  .modal-box input, .modal-box textarea, .modal-box select { padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.4); color: #fff; }
+  .modal-box label.inline { flex-direction: row; align-items: center; gap: 10px; color: var(--text); }
+  .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px; }
+  .modal-actions button[type="button"] { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 10px 20px; border-radius: 8px; }
+  .modal-actions button[type="submit"] { background: var(--gold); color: #000; padding: 10px 24px; border-radius: 8px; font-weight: 600; }
+
+  /* ADICIONAIS */
+  .addition-item { display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.3); padding: 8px 12px; border-radius: 6px; margin-bottom: 6px; font-size: 0.85rem; }
+  .addition-item button { color: #ff6b6b; background: none; font-size: 1.2rem; cursor: pointer; }
+  .add-addition-box { display: flex; gap: 8px; margin-bottom: 10px; }
+  .add-addition-box input { flex: 1; padding: 8px; }
+  .add-addition-box button { background: var(--gold); color: #000; padding: 0 12px; border-radius: 6px; font-weight: bold; }
+
+  /* LOGO */
+  .logo-img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; }
+  .logo-text { font-size: 1rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
+</style>
+</head>
+<body>
+
+<div class="login-screen" id="loginScreen">
+  <form id="loginForm" class="login-box">
+    <h2>Admin Miranda</h2>
+    <input type="email" id="email" placeholder="E-mail" required value="admin@miranda.com">
+    <input type="password" id="password" placeholder="Senha" required value="123456">
+    <button type="submit">Entrar no painel</button>
+    <p id="loginError" class="error"></p>
+    <a href="index.html" style="text-align:center; color:var(--text-muted); font-size:0.85rem; text-decoration:none; margin-top:10px;">← Voltar ao site</a>
+  </form>
+</div>
+
+<div class="admin-panel" id="adminPanel">
+  <header class="admin-header">
+    <div style="display:flex; align-items:center; gap:16px;">
+      <img src="imagem/logo.png" alt="Logo" class="logo-img">
+      <h1>Painel Administrativo</h1>
+    </div>
+    <div style="display:flex; gap:10px;">
+      <a href="index.html" style="color:var(--gold); text-decoration:none; padding:8px 16px; border:1px solid var(--gold); border-radius:50px; font-size:0.9rem;">Ver site</a>
+      <button id="logoutBtn" class="btn-logout">Sair</button>
+    </div>
+  </header>
+
+  <div class="admin-tabs">
+    <button data-tab="products" class="active">Produtos</button>
+    <button data-tab="categories">Categorias</button>
+    <button data-tab="settings">Configurações</button>
+  </div>
+
+  <section class="tab-content active" id="tab-products">
+    <button class="btn-primary" id="newProductBtn">+ Novo Produto</button>
+    <div id="productList" class="admin-grid"></div>
+  </section>
+
+  <section class="tab-content" id="tab-categories">
+    <form id="categoryForm" class="inline-form">
+      <input name="name" placeholder="Nome da categoria" required>
+      <input name="order" type="number" placeholder="Ordem (1, 2, 3...)" value="0">
+      <button class="btn-primary" type="submit" style="margin:0;">Adicionar Categoria</button>
+    </form>
+    <div id="categoryList" class="admin-grid"></div>
+  </section>
+
+  <section class="tab-content" id="tab-settings">
+    <form id="settingsForm" class="settings-form">
+      <label>Nome do estabelecimento<input name="restaurantName"></label>
+      <label>Endereço<input name="address"></label>
+      <label>Horário de funcionamento<input name="openingHours"></label>
+      <label>Mensagem de boas-vindas<textarea name="welcomeMessage" rows="3"></textarea></label>
+      <button class="btn-primary" type="submit" style="margin-top:10px;">Salvar Configurações</button>
+    </form>
+  </section>
+</div>
+
+<div id="productModal" class="modal">
+  <div class="modal-box">
+    <button class="modal-close" id="closeProductModal">✕</button>
+    <h3 id="modalTitle">Novo Produto</h3>
+    <form id="productForm">
+      <input type="hidden" name="id">
+      <label>Nome do Produto<input name="name" required></label>
+      <label>Descrição<textarea name="description" rows="2"></textarea></label>
+      <label>Preço (R$)<input name="price" type="number" step="0.01" required></label>
+      <label>Categoria<select name="category" required></select></label>
+      
+      <label>Upload de Imagem (do computador)<input name="image" type="file" accept="image/*"></label>
+      <label>OU Link de Imagem (da internet)<input name="imageUrl" placeholder="https://exemplo.com/foto.jpg"></label>
+
+      <!-- ÁREA DE ADICIONAIS -->
+      <div style="border: 1px solid rgba(255,255,255,0.1); padding: 12px; border-radius: 8px;">
+        <p style="font-size: 0.85rem; color: var(--gold); margin-bottom: 8px;">Adicionais (Opcional)</p>
+        <div id="additionsList"></div>
+        <div class="add-addition-box">
+          <input type="text" id="newAdditionName" placeholder="Ex: Queijo extra">
+          <input type="number" id="newAdditionPrice" placeholder="R$ 0,00" style="max-width: 80px;">
+          <button type="button" id="addAdditionBtn">+</button>
+        </div>
+      </div>
+
+      <label class="inline"><input type="checkbox" name="active" checked> Ativo no cardápio</label>
+      <label class="inline"><input type="checkbox" name="featured"> Destaque</label>
+      <label class="inline"><input type="checkbox" name="unavailable"> Esgotado hoje</label>
+      <div class="modal-actions">
+        <button type="button" id="cancelProductModal">Cancelar</button>
+        <button type="submit">Salvar Produto</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+const API = 'http://127.0.0.1:4000'; 
+const $ = s => document.querySelector(s);
+const $$ = s => document.querySelectorAll(s);
+let token = localStorage.getItem('adminToken');
+let categories = [];
+let currentAdditions = []; 
+
+function authFetch(url, opts = {}) {
+  opts.headers = { ...(opts.headers || {}), Authorization: `Bearer ${token}` };
+  return fetch(url, opts);
+}
+
+function showPanel() {
+  $('#loginScreen').style.display = 'none';
+  $('#adminPanel').style.display = 'block';
+  loadCategories();
+  loadProducts();
+  loadSettingsForm();
+}
+
+if (token) showPanel();
+
+$('#loginForm').onsubmit = async (e) => {
+  e.preventDefault();
+  $('#loginError').textContent = '';
+  try {
+    const res = await fetch(`${API}/api/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: $('#email').value, password: $('#password').value }),
+    });
+    if (!res.ok) throw new Error('Credenciais inválidas');
+    const data = await res.json();
+    token = data.token;
+    localStorage.setItem('adminToken', token);
+    showPanel();
+  } catch (err) { $('#loginError').textContent = err.message; }
+};
+
+$('#logoutBtn').onclick = () => {
+  localStorage.removeItem('adminToken');
+  location.reload();
+};
+
+$$('.admin-tabs button').forEach(b => {
+  b.onclick = () => {
+    $$('.admin-tabs button').forEach(x => x.classList.remove('active'));
+    $$('.tab-content').forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+    $(`#tab-${b.dataset.tab}`).classList.add('active');
+  };
+});
+
+async function loadCategories() {
+  categories = await fetch(`${API}/api/categories`).then(r => r.json());
+  $('#categoryList').innerHTML = categories.map(c => `
+    <div class="admin-card">
+      <strong>${c.name}</strong>
+      <small>Ordem: ${c.order}</small>
+      <div class="card-actions">
+        <button onclick="editCategory('${c._id}')">Editar</button>
+        <button onclick="deleteCategory('${c._id}')" class="danger">Excluir</button>
+      </div>
+    </div>
+  `).join('');
+  const sel = $('#productForm select[name="category"]');
+  sel.innerHTML = categories.map(c => `<option value="${c._id}">${c.name}</option>`).join('');
+}
+
+$('#categoryForm').onsubmit = async (e) => {
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  await authFetch(`${API}/api/categories`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name: fd.get('name'), order: Number(fd.get('order')) || 0 }),
+  });
+  e.target.reset();
+  loadCategories();
+};
+
+window.editCategory = async (id) => {
+  const c = categories.find(x => x._id === id);
+  const name = prompt('Novo nome:', c.name);
+  if (!name) return;
+  const order = prompt('Nova ordem:', c.order);
+  await authFetch(`${API}/api/categories/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name, order: Number(order) || 0 }),
+  });
+  loadCategories();
+};
+
+window.deleteCategory = async (id) => {
+  if (!confirm('Excluir categoria?')) return;
+  await authFetch(`${API}/api/categories/${id}`, { method: 'DELETE' });
+  loadCategories();
+};
+
+async function loadProducts() {
+  const prods = await authFetch(`${API}/api/products/all`).then(r => r.json());
+  $('#productList').innerHTML = prods.map(p => `
+    <div class="admin-card">
+      <strong>${p.name} ${p.featured ? '⭐' : ''}</strong>
+      <small>${p.category?.name || 'Sem categoria'} • R$ ${p.price.toFixed(2).replace('.', ',')}</small>
+      <small>${p.active ? '✅ Ativo' : '⛔ Inativo'} ${p.unavailable ? '• 🚫 Esgotado' : ''}</small>
+      <div class="card-actions">
+        <button onclick="editProduct('${p._id}')">Editar</button>
+        <button onclick="deleteProduct('${p._id}')" class="danger">Excluir</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderAdditions() {
+  $('#additionsList').innerHTML = currentAdditions.map((a, index) => `
+    <div class="addition-item">
+      <span>${a.name} - R$ ${a.price.toFixed(2).replace('.', ',')}</span>
+      <button type="button" onclick="removeAddition(${index})">✕</button>
+    </div>
+  `).join('');
+}
+
+window.removeAddition = (index) => {
+  currentAdditions.splice(index, 1);
+  renderAdditions();
+};
+
+$('#addAdditionBtn').onclick = () => {
+  const name = $('#newAdditionName').value.trim();
+  const price = Number($('#newAdditionPrice').value);
+  
+  if (!name || isNaN(price)) {
+    alert('Preencha o nome e o preço do adicional corretamente.');
+    return;
+  }
+
+  currentAdditions.push({ name, price });
+  $('#newAdditionName').value = '';
+  $('#newAdditionPrice').value = '';
+  renderAdditions();
+};
+
+$('#newProductBtn').onclick = () => {
+  $('#productForm').reset();
+  $('#productForm [name="id"]').value = '';
+  $('#productForm [name="active"]').checked = true;
+  currentAdditions = []; 
+  renderAdditions();
+  $('#modalTitle').textContent = 'Novo Produto';
+  $('#productModal').classList.add('show');
+};
+
+$('#closeProductModal').onclick = () => $('#productModal').classList.remove('show');
+$('#cancelProductModal').onclick = () => $('#productModal').classList.remove('show');
+
+window.editProduct = async (id) => {
+  const prods = await authFetch(`${API}/api/products/all`).then(r => r.json());
+  const p = prods.find(x => x._id === id);
+  if (!p) return;
+  
+  const f = $('#productForm');
+  f.id.value = p._id;
+  f.name.value = p.name;
+  f.description.value = p.description;
+  f.price.value = p.price;
+  f.category.value = p.category?._id || '';
+  f.imageUrl.value = p.imageUrl || ''; 
+  f.image.value = ''; 
+  f.active.checked = p.active;
+  f.featured.checked = p.featured;
+  f.unavailable.checked = p.unavailable;
+  
+  currentAdditions = p.additions || [];
+  renderAdditions();
+
+  $('#modalTitle').textContent = 'Editar Produto';
+  $('#productModal').classList.add('show');
+};
+
+window.deleteProduct = async (id) => {
+  if (!confirm('Excluir produto?')) return;
+  await authFetch(`${API}/api/products/${id}`, { method: 'DELETE' });
+  loadProducts();
+};
+
+$('#productForm').onsubmit = async (e) => {
+  e.preventDefault();
+  const f = e.target;
+  
+  const data = {
+    name: f.name.value,
+    description: f.description.value,
+    price: Number(f.price.value),
+    category: f.category.value,
+    active: f.active.checked, 
+    featured: f.featured.checked,
+    unavailable: f.unavailable.checked,
+    imageUrl: f.imageUrl.value.trim(),
+    additions: currentAdditions
+  };
+
+  if (f.image && f.image.files.length > 0) {
+    const file = f.image.files[0];
+    const imgData = new FormData();
+    imgData.append('image', file);
+
+    try {
+      const uploadRes = await authFetch(`${API}/api/products/upload`, {
+        method: 'POST',
+        body: imgData
+      });
+      const uploadJson = await uploadRes.json();
+      
+      if (!uploadRes.ok) throw new Error(uploadJson.error || 'Erro no upload');
+      data.imageUrl = uploadJson.url;
+    } catch (err) {
+      alert('Falha no upload da imagem: ' + err.message);
+      return; 
+    }
+  }
+
+  const url = f.id.value ? `${API}/api/products/${f.id.value}` : `${API}/api/products`;
+  const method = f.id.value ? 'PUT' : 'POST';
+  
+  try {
+    const res = await authFetch(url, {
+      method: method,
+      headers: { 'Content-Type': 'application/json' }, 
+      body: JSON.stringify(data)
+    });
+    
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.error || 'Erro ao salvar');
+    }
+
+    $('#productModal').classList.remove('show');
+    loadProducts();
+  } catch (err) {
+    alert('Erro ao salvar produto: ' + err.message);
+  }
+};
+
+async function loadSettingsForm() {
+  const s = await fetch(`${API}/api/settings`).then(r => r.json());
+  const f = $('#settingsForm');
+  Object.keys(s).forEach(k => { if (f[k]) f[k].value = s[k]; });
+}
+
+$('#settingsForm').onsubmit = async (e) => {
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  const body = Object.fromEntries(fd);
+  await authFetch(`${API}/api/settings`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+  alert('Configurações salvas com sucesso!');
+};
+</script>
+</body>
+</html>
